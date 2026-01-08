@@ -5,158 +5,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DABROWSER - Fast, Secure, Aesthetic</title>
     <style>
-        :root {
-            [cite_start]/* Theme Colors extracted from your XAML [cite: 2, 3] */
-            --bg-color: #121212;
-            --card-bg: #151520;
-            --primary: #8E2DE2;
-            --accent: #4A00E0;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0B0D0;
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
+        /* BASE STYLES */
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            /* Hardcoded dark background to prevent white-screen issues */
+            background-color: #121212; 
+            color: #FFFFFF;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        [cite_start]/* Animated Background Glow matching your app's "GlowColor" [cite: 3] */
+        /* BACKGROUND GLOW (The animated purple blob) */
         .background-glow {
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(142, 45, 226, 0.15), transparent 60%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(142, 45, 226, 0.2) 0%, rgba(18, 18, 18, 0) 70%);
             z-index: -1;
-            animation: pulse 10s infinite alternate;
+            pointer-events: none;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        /* Glassmorphism Navbar */
+        /* NAVBAR */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
-            background: rgba(21, 21, 32, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
+            background-color: #151520; /* Solid dark color fallback */
+            background: rgba(21, 21, 32, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .logo {
             font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #8E2DE2, #4A00E0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            color: #8E2DE2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .nav-links a {
-            color: var(--text-secondary);
+            color: #B0B0D0;
             text-decoration: none;
             margin-left: 30px;
-            transition: 0.3s;
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--text-primary);
-            text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);
+            color: #FFFFFF;
         }
 
-        /* Hero Section */
+        /* HERO SECTION (The Big Text) */
         .hero {
-            height: 80vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 20px;
         }
 
         h1 {
             font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #fff, #b0b0d0);
+            margin-bottom: 10px;
+            line-height: 1.1;
+            /* Fallback color if gradient fails */
+            color: #FFFFFF; 
+            background: linear-gradient(135deg, #FFFFFF 0%, #B0B0D0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            /* Drop shadow to make text pop against any background */
+            filter: drop-shadow(0 0 20px rgba(142, 45, 226, 0.3));
         }
 
-        p.subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 40px;
+        .subtitle {
+            font-size: 1.4rem;
+            color: #B0B0D0;
+            max-width: 700px;
+            margin-bottom: 50px;
+            line-height: 1.6;
         }
 
         .btn-download {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, #8E2DE2, #4A00E0);
             color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
+            padding: 18px 45px;
+            border-radius: 50px;
             text-decoration: none;
             font-size: 1.2rem;
             font-weight: bold;
-            box-shadow: 0 10px 30px rgba(142, 45, 226, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .btn-download:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(142, 45, 226, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(142, 45, 226, 0.7);
         }
 
-        /* Features Grid */
+        /* FEATURES SECTION (The Lil Windows) */
         .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             gap: 30px;
-            padding: 50px 10%;
+            padding: 50px 20px 100px 20px;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            padding: 30px;
+            /* Darker background to ensure visibility */
+            background-color: #1A1A24; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 300px;
+            padding: 40px 30px;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
+            text-align: left;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .feature-card:hover {
-            background: rgba(255, 255, 255, 0.07);
-            transform: translateY(-5px);
-            border-color: var(--primary);
+            transform: translateY(-10px);
+            border-color: #8E2DE2;
+            background-color: #20202B;
         }
 
         .feature-icon {
             font-size: 40px;
             margin-bottom: 20px;
-            color: var(--primary);
+            display: inline-block;
+            background: rgba(142, 45, 226, 0.1);
+            padding: 15px;
+            border-radius: 15px;
         }
 
-        h3 { margin-top: 0; }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin: 0 0 15px 0;
+            color: #FFFFFF;
+        }
 
-        /* Footer */
+        .feature-card p {
+            color: #B0B0D0;
+            line-height: 1.6;
+            margin: 0;
+        }
+
         footer {
             text-align: center;
-            padding: 40px;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 50px;
+            padding: 50px;
+            color: #555;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background-color: #0F0F0F;
         }
     </style>
 </head>
@@ -174,7 +186,7 @@
     </nav>
 
     <div class="hero">
-        <h1>Trust ME with YOUR browsing</h1>
+        <h1>Trust ME with <br> YOUR browsing</h1>
         <p class="subtitle">Experience the next generation of web browsing. Built for speed, designed for aesthetics, and crafted for privacy.</p>
         <a href="https://github.com/69DABLUI69" class="btn-download">Download Beta</a>
     </div>
@@ -199,7 +211,6 @@
 
     <footer>
         <p>&copy; 2025 DABROWSER Project. All rights reserved.</p>
-        <p>This project is open source and community driven.</p>
     </footer>
 
 </body>
